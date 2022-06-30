@@ -1,0 +1,47 @@
+
+Guide to adding new Azure DevOps client to bug count.
+=====================================================
+
+
+1. Create 'shared query'
+-------------------------
+This will require permission access to create and store shared queries.
+
+Work Item Type = Bug
+Created Date >= @Today - 6
+
+Once created get the ID of the query from the Editor page URL
+(Client example d2ba358d-8309-46b2-aed9-0c2efb008389)
+
+Then put the ID in the following format URL: 
+
+https://dev.azure.com/CLIENT/PROJECT/
+https://CLIENT.visualstudio.com/PROJECT/
+_apis/wit/wiql/
+ID GOES HERE
+?api-version=4.1
+
+Example (https://client.visualstudio.com/WalledGarden/_apis/wit/wiql/d2ea358d-8309-46b2-aed9-0c2efb008389?api-version=4.1)
+
+
+2. Add client to array
+----------------------
+
+Inside Clients.cs add the new client to the list object. in the following format:
+
+new Object[] { "CLIENT", 0, 0, "ADO ACCESS KEY" }       // 11 CLIENT
+
+The access key can be a pre-existing key from a Microsoft account.
+OR
+An access key with another acount that has access to the releveant project.
+
+Note when running the app, if you get an error at 'JObject jiraResults = JObject.Parse(jiraJson);' This probably means your PAT key is incorrect.
+
+
+3. Add client to ADO job list
+-----------------------------
+
+Inside program.cs add the new client in so that the applicaiton runs a count and includes it.
+
+// CLIENT
+VSTS.GetIssues("JOB NUMBER", ARRAY NUMBER, "qa", "QUEERY URL");
